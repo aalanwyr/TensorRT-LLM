@@ -1958,11 +1958,13 @@ def test_ptp_quickstart_advanced_deepseek_v3_lite_4gpus_adp_balance(
 @pytest.mark.parametrize("model_name,model_path", [
     pytest.param(
         'DeepSeek-R1', 'DeepSeek-R1/DeepSeek-R1', marks=skip_pre_hopper),
+    pytest.param('DeepSeek-V3-0324', 'DeepSeek-V3-0324', marks=skip_pre_hopper),
 ])
-def test_ptp_quickstart_advanced_deepseek_r1_8gpus(llm_root, llm_venv,
-                                                   model_name, model_path):
+def test_ptp_quickstart_advanced_deepseek_8gpus(llm_root, llm_venv, model_name,
+                                                model_path):
     print(f"Testing {model_name}.")
     example_root = Path(os.path.join(llm_root, "examples", "llm-api"))
+    mapping = {"DeepSeek-R1": 106.3, "DeepSeek-V3-0324": 106.3}
     with tempfile.NamedTemporaryFile(mode='w+t',
                                      suffix=f".{model_name}.log",
                                      dir="./",
@@ -1983,7 +1985,7 @@ def test_ptp_quickstart_advanced_deepseek_r1_8gpus(llm_root, llm_venv,
             "--disable_kv_cache_reuse",
         ],
                          stdout=running_log)
-        _check_mem_usage(running_log, [106.3, 0, 0, 0], 8)
+        _check_mem_usage(running_log, [mapping[model_name], 0, 0, 0], 8)
 
 
 @skip_post_blackwell
@@ -1992,11 +1994,13 @@ def test_ptp_quickstart_advanced_deepseek_r1_8gpus(llm_root, llm_venv,
 @pytest.mark.parametrize("model_name,model_path", [
     pytest.param(
         'DeepSeek-R1', 'DeepSeek-R1/DeepSeek-R1', marks=skip_pre_hopper),
+    pytest.param('DeepSeek-V3-0324', 'DeepSeek-V3-0324', marks=skip_pre_hopper),
 ])
-def test_relaxed_acceptance_quickstart_advanced_deepseek_r1_8gpus(
+def test_relaxed_acceptance_quickstart_advanced_deepseek_8gpus(
         llm_root, llm_venv, model_name, model_path):
     print(f"Testing {model_name}.")
     example_root = Path(os.path.join(llm_root, "examples", "llm-api"))
+    mapping = {"DeepSeek-R1": 85.6, "DeepSeek-V3-0324": 85.6}
     with tempfile.NamedTemporaryFile(mode='w+t',
                                      suffix=f".{model_name}.log",
                                      dir="./",
@@ -2024,7 +2028,7 @@ def test_relaxed_acceptance_quickstart_advanced_deepseek_r1_8gpus(
             "--enable_attention_dp",
         ],
                          stdout=running_log)
-        _check_mem_usage(running_log, [85.6, 0, 0, 0], 8)
+        _check_mem_usage(running_log, [mapping[model_name], 0, 0, 0], 8)
 
 
 @pytest.mark.skip_less_device_memory(80000)
